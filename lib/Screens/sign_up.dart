@@ -35,7 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Login',
+                    'Sign Up',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
