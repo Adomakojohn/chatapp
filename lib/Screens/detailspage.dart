@@ -19,7 +19,8 @@ class _DetailsPageState extends State<DetailsPage> {
         children: [
           Align(
             alignment: Alignment.bottomCenter,
-            child: Container( padding:const EdgeInsets.only(left: 10,bottom: 10,top: 10),
+            child: Container(
+              padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
               height: 60,
               width: double.infinity,
               color: Colors.transparent,
@@ -57,9 +58,9 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                   FloatingActionButton(
                     onPressed: () {},
-                    backgroundColor: Color.fromARGB(255, 50, 75, 213),
+                    backgroundColor: const Color.fromARGB(255, 50, 75, 213),
                     elevation: 0,
-                     child: const Icon(
+                    child: const Icon(
                       Icons.send,
                       color: Colors.white,
                       size: 20,
