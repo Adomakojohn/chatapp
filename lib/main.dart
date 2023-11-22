@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:chat_app/Screens/log_in.dart';
 import 'package:chat_app/Screens/profile_screen.dart';
 import 'package:chat_app/Screens/sign_up.dart';
