@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,15 +49,6 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBR9pf6SWNsO7Qpav1S7yKZQ2muu5tOF0A',
-    appId: '1:588349736392:web:03d173a2014702f5f6ecfd',
-    messagingSenderId: '588349736392',
-    projectId: 'chatapp-29c9b',
-    authDomain: 'chatapp-29c9b.firebaseapp.com',
-    storageBucket: 'chatapp-29c9b.appspot.com',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCzwyyPWkYXEmRsi6-0EuwRkIMBZ2ySKus',
     appId: '1:588349736392:android:f1b177e84f5cb09df6ecfd',
@@ -66,15 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '588349736392',
     projectId: 'chatapp-29c9b',
     storageBucket: 'chatapp-29c9b.appspot.com',
+    androidClientId: '588349736392-e206rhhk8dp8e3tolo510pkud5sf20i5.apps.googleusercontent.com',
+    iosClientId: '588349736392-i1edao5kc71bdpqcnu62e84rn7vc38ml.apps.googleusercontent.com',
     iosBundleId: 'com.example.chatApp',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBX2UsmwTljyq_8Io4kuolPUmsa0TFC-So',
-    appId: '1:588349736392:ios:7b2e20f9129164b4f6ecfd',
-    messagingSenderId: '588349736392',
-    projectId: 'chatapp-29c9b',
-    storageBucket: 'chatapp-29c9b.appspot.com',
-    iosBundleId: 'com.example.chatApp.RunnerTests',
   );
 }

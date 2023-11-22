@@ -1,5 +1,8 @@
 import 'package:animated_switch/animated_switch.dart';
+import 'package:chat_app/Screens/homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 //stateful class for the login screen
 class LogInScreen extends StatefulWidget {
@@ -12,6 +15,36 @@ class LogInScreen extends StatefulWidget {
 class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  _handleGoogleBtnClick() {
+    _signInWithGoogle().then((user) {
+      // ignore: avoid_print
+      print('\nUser: ${user.user}');
+      // ignore: avoid_print
+      print('\nUser: ${user.additionalUserInfo}');
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const HomePage()));
+    });
+  }
+
+  Future<UserCredential> _signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,7 +179,9 @@ class _LogInScreenState extends State<LogInScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        _handleGoogleBtnClick();
+                      },
                       child: Container(
                         height: 60,
                         width: 375,
