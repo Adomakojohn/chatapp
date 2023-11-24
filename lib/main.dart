@@ -18,10 +18,12 @@ void main() {
 
   // for setting orientation to portrait only
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
-  _initializeFirebase();
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((value){
+        _initializeFirebase();
   runApp(const MyApp());
+      });
+
+  
 }
 
 class MyApp extends StatelessWidget {
@@ -31,9 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-
       home: OnboardingPage(),
-
     );
   }
 }
