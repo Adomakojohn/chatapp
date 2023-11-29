@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:chat_app/Screens/homepage.dart';
 import 'package:chat_app/Screens/log_in.dart';
 import 'package:chat_app/models/onboarding.dart';
@@ -13,7 +15,7 @@ class OnboardingPage extends StatefulWidget {
 
 class _OnboardingPageState extends State<OnboardingPage> {
   final PageController _controller = PageController();
-  bool onLastPage = false ;
+  bool onLastPage = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +25,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             controller: _controller,
             onPageChanged: (index) {
               setState(() {
-                onLastPage=(index==2);
+                onLastPage = (index == 2);
               });
             },
             children: [
@@ -64,21 +66,25 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   count: 3,
                   effect: SwapEffect(activeDotColor: Colors.red.shade200),
                 ),
-                onLastPage?
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const LogInScreen(),));
-                  },
-                  child: const Text("Done"),
-                ):
-                GestureDetector(
-                  onTap: () {
-                    _controller.nextPage(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeIn);
-                  },
-                  child: const Text("Next"),
-                ),
+                onLastPage
+                    ? GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LogInScreen(),
+                              ));
+                        },
+                        child: const Text("Done"),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          _controller.nextPage(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeIn);
+                        },
+                        child: const Text("Next"),
+                      ),
               ],
             ),
           ),
