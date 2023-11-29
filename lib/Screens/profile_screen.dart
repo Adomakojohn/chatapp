@@ -1,5 +1,8 @@
+// ignore_for_file: unused_import
+
 import 'package:chat_app/Screens/log_in.dart';
 import 'package:chat_app/Screens/sign_up.dart';
+
 import 'package:chat_app/Screens/homepage.dart';
 import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/main.dart';
