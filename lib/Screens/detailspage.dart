@@ -13,7 +13,12 @@ class _DetailsPageState extends State<DetailsPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        backgroundColor: Color(0xFF553388),
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: const Icon(Icons.arrow_back_ios_new_rounded)),
         title: const Text("Details page"),
+        automaticallyImplyLeading: false,
       ),
       body: Stack(
         children: [
@@ -32,7 +37,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       height: 30,
                       width: 30,
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 50, 75, 213),
+                        color: const Color(0xFF553388),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: const Icon(
@@ -58,7 +63,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                   FloatingActionButton(
                     onPressed: () {},
-                    backgroundColor: const Color.fromARGB(255, 50, 75, 213),
+                    backgroundColor: const Color(0xFF553388),
                     elevation: 0,
                     child: const Icon(
                       Icons.send,
