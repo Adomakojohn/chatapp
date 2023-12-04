@@ -8,6 +8,7 @@ import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/main.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 // ignore: camel_case_types
 class profile_screen extends StatefulWidget {
