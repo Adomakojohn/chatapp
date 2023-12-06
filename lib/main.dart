@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             color: Colors.black, fontWeight: FontWeight.normal, fontSize: 22),
       )),
       debugShowCheckedModeBanner: false,
-      home: const OnboardingPage(),
+      home: const SplashScreen(),
     );
   }
 }
