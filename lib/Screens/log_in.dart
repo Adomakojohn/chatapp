@@ -1,6 +1,7 @@
 // ignore: unused_import
 // ignore_for_file: avoid_print, duplicate_import
 
+import 'dart:developer';
 import 'dart:io';
 // ignore: unused_import
 import 'package:animated_switch/animated_switch.dart';
@@ -30,9 +31,9 @@ class _LogInScreenState extends State<LogInScreen> {
     _signInWithGoogle().then((user) async {
       Navigator.pop(context);
       if (user != null) {
-        print('\nUser: ${user.user}');
+        log('\nUser: ${user.user}');
 
-        print('\nUser: ${user.additionalUserInfo}');
+        log('\nUser: ${user.additionalUserInfo}');
         if ((await APIs.userExists())) {
           // ignore: use_build_context_synchronously
           Navigator.pushReplacement(
@@ -67,7 +68,7 @@ class _LogInScreenState extends State<LogInScreen> {
       return await APIs.auth.signInWithCredential(credential);
       // ignore: empty_catches
     } catch (e) {
-      print('\n_signInWithGoogle:  $e');
+      log('\n_signInWithGoogle:  $e');
       // ignore: use_build_context_synchronously
       Dialogs.showSnackbar(context,
           'Oops! Something Went Wrong,Please Check Your Internet Connection And Try Again.');

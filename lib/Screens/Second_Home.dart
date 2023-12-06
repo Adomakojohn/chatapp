@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, avoid_print, unused_import
 
 import 'dart:developer';
+import 'package:chat_app/Screens/profile_screen.dart';
 import 'package:chat_app/models2/chat_user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:chat_app/main.dart';
@@ -20,6 +21,11 @@ class SecondHome extends StatefulWidget {
 
 class _SecondHomeState extends State<SecondHome> {
   List<ChatUser> list = [];
+  @override
+  void initState() {
+    super.initState();
+    APIs.getSelfInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +38,14 @@ class _SecondHomeState extends State<SecondHome> {
           IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
 
           //more features button
-          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => profile_screen(user: APIs.me)));
+              },
+              icon: const Icon(Icons.more_vert))
         ],
       ),
       floatingActionButton: Padding(
@@ -47,7 +60,7 @@ class _SecondHomeState extends State<SecondHome> {
       ),
       //body
       body: StreamBuilder(
-        stream: APIs.firestore.collection("users").snapshots(),
+        stream: APIs.getAllUsers(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             // if data is not loading
