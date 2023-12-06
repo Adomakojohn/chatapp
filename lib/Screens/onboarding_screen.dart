@@ -2,6 +2,7 @@
 
 import 'package:chat_app/Screens/homepage.dart';
 import 'package:chat_app/Screens/log_in.dart';
+import 'package:chat_app/Screens/splash_screen.dart';
 import 'package:chat_app/models/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -72,7 +73,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const LogInScreen(),
+                                builder: (context) => const SplashScreen(),
                               ));
                         },
                         child: const Text("Done"),

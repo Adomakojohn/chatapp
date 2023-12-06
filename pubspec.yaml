@@ -37,14 +37,20 @@ dependencies:
   cupertino_icons: ^1.0.2
   animated_switch: ^0.0.2
   intl_phone_field: ^3.2.0
-  firebase_core: ^2.22.0
+  firebase_core: ^2.24.0
   smooth_page_indicator: ^1.1.0
 
 
   firebase_auth: ^4.14.0
 
   google_sign_in: ^6.1.6
+  cloud_firestore: ^4.13.3
+  cached_network_image: ^3.3.0
 
+# For accessing cloud Firestore database
+cloud_firestore: ^4.13.3
+#For showing nentwork images
+cached_network_image: ^3.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

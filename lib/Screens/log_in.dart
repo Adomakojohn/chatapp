@@ -1,10 +1,12 @@
 // ignore: unused_import
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, duplicate_import
 
 import 'dart:io';
 // ignore: unused_import
 import 'package:animated_switch/animated_switch.dart';
-import 'package:chat_app/Screens/homepage.dart';
+import 'package:chat_app/Screens/Second_Home.dart';
+import 'package:chat_app/Screens/Second_Home.dart';
+import 'package:chat_app/api/apis.dart';
 import 'package:chat_app/helper/dialogs.dart';
 import 'package:chat_app/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,17 +23,26 @@ class LogInScreen extends StatefulWidget {
 
 class _LogInScreenState extends State<LogInScreen> {
   bool _isAnimate = false;
-
+// handles google login button click
   _handleGoogleBtnClick() {
+    // for showing progress bar
     Dialogs.showProgressBar(context);
-    _signInWithGoogle().then((user) {
+    _signInWithGoogle().then((user) async {
       Navigator.pop(context);
       if (user != null) {
         print('\nUser: ${user.user}');
 
         print('\nUser: ${user.additionalUserInfo}');
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const HomePage()));
+        if ((await APIs.userExists())) {
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => const SecondHome()));
+        } else {
+          await APIs.createUser().then((value) {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (_) => const SecondHome()));
+          });
+        }
       }
     });
   }
@@ -53,7 +64,7 @@ class _LogInScreenState extends State<LogInScreen> {
       );
 
       // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      return await APIs.auth.signInWithCredential(credential);
       // ignore: empty_catches
     } catch (e) {
       print('\n_signInWithGoogle:  $e');

@@ -1,7 +1,7 @@
 // ignore_for_file: unused_import
 
+import 'package:chat_app/Screens/Second_Home.dart';
 import 'package:chat_app/Screens/log_in.dart';
-
 import 'package:chat_app/Screens/onboarding_screen.dart';
 import 'package:chat_app/Screens/profile_screen.dart';
 import 'package:chat_app/Screens/sign_up.dart';
@@ -12,9 +12,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+//global variable
 late Size mq;
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // enter full screen
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
@@ -22,7 +24,6 @@ void main() {
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((value) {
-    _initializeFirebase();
     runApp(const MyApp());
   });
 }
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    mq = MediaQuery.of(context).size;
     return MaterialApp(
       theme: ThemeData(
           appBarTheme: const AppBarTheme(
@@ -43,11 +45,7 @@ class MyApp extends StatelessWidget {
             color: Colors.black, fontWeight: FontWeight.normal, fontSize: 22),
       )),
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: const OnboardingPage(),
     );
   }
-}
-
-_initializeFirebase() async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
