@@ -110,7 +110,9 @@ class _profile_screenState extends State<profile_screen> {
                         left: 100,
                         child: MaterialButton(
                           elevation: 1,
-                          onPressed: () {},
+                          onPressed: () {
+                            _showBottomSheet();
+                          },
                           shape: const CircleBorder(),
                           color: Colors.white,
                           child: const Icon(
@@ -203,5 +205,58 @@ class _profile_screenState extends State<profile_screen> {
         ),
       ),
     );
+  }
+
+  // for picking a profile picture for user
+  void _showBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        builder: (_) {
+          return ListView(
+            shrinkWrap: true,
+            padding:
+                EdgeInsets.only(top: mq.height * 0.01, bottom: mq.height * .05),
+            children: [
+              const Text(
+                // pick a profile picture label
+                "Pick a profile Picture",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ),
+              // for adding some space
+              SizedBox(
+                height: mq.height * .03,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // pick pictures from gallery button
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: const CircleBorder(),
+                          fixedSize: Size(mq.width * 000.5, mq.height * .1)),
+                      onPressed: () {},
+                      child: Image.asset(
+                        'Assets/images/add_image.png',
+                      )),
+                  //take pictures from camera button
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: const CircleBorder(),
+                          fixedSize: Size(mq.width * 000.5, mq.height * .1)),
+                      onPressed: () {},
+                      child: Image.asset(
+                        'Assets/images/camera.png',
+                      )),
+                ],
+              )
+            ],
+          );
+        });
   }
 }
