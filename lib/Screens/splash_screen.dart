@@ -1,8 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'package:animated_switch/animated_switch.dart';
-import 'package:chat_app/Screens/Second_Home.dart';
-import 'package:chat_app/Screens/homepage.dart';
+import 'package:chat_app/Screens/home_screen.dart';
 import 'package:chat_app/Screens/log_in.dart';
 import 'package:chat_app/api/apis.dart';
 import 'package:chat_app/main.dart';
@@ -35,7 +34,7 @@ class Splash extends State<SplashScreen> {
         print('\nUser: ${APIs.auth.currentUser}');
 
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const SecondHome()));
+            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
       } else {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => const LogInScreen()));

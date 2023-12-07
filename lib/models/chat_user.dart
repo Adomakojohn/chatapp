@@ -1,6 +1,3 @@
-// ignore: unused_import
-import 'dart:ffi';
-
 class ChatUser {
   ChatUser({
     required this.image,

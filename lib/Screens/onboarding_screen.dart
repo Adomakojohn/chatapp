@@ -1,20 +1,23 @@
 // ignore_for_file: unused_import
 
-import 'package:chat_app/Screens/homepage.dart';
 import 'package:chat_app/Screens/log_in.dart';
 import 'package:chat_app/Screens/splash_screen.dart';
-import 'package:chat_app/models/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class OnboardingPage extends StatefulWidget {
-  const OnboardingPage({super.key});
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen(
+      {super.key,
+      required Color screenColor,
+      required String firstText,
+      required String imagePath,
+      required String secondText});
 
   @override
-  State<OnboardingPage> createState() => _OnboardingPageState();
+  State<OnboardingScreen> createState() => _OnboardingPageState();
 }
 
-class _OnboardingPageState extends State<OnboardingPage> {
+class _OnboardingPageState extends State<OnboardingScreen> {
   final PageController _controller = PageController();
   bool onLastPage = false;
   @override

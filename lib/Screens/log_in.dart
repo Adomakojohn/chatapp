@@ -5,8 +5,8 @@ import 'dart:developer';
 import 'dart:io';
 // ignore: unused_import
 import 'package:animated_switch/animated_switch.dart';
-import 'package:chat_app/Screens/Second_Home.dart';
-import 'package:chat_app/Screens/Second_Home.dart';
+import 'package:chat_app/Screens/home_screen.dart';
+import 'package:chat_app/Screens/home_screen.dart';
 import 'package:chat_app/api/apis.dart';
 import 'package:chat_app/helper/dialogs.dart';
 import 'package:chat_app/main.dart';
@@ -37,11 +37,11 @@ class _LogInScreenState extends State<LogInScreen> {
         if ((await APIs.userExists())) {
           // ignore: use_build_context_synchronously
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (_) => const SecondHome()));
+              context, MaterialPageRoute(builder: (_) => const HomeScreen()));
         } else {
           await APIs.createUser().then((value) {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => const SecondHome()));
+                context, MaterialPageRoute(builder: (_) => const HomeScreen()));
           });
         }
       }

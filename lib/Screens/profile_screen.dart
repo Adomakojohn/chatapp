@@ -2,18 +2,17 @@
 
 import 'dart:developer';
 import 'dart:io';
+import 'package:chat_app/models/chat_user.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chat_app/Screens/Second_Home.dart';
+import 'package:chat_app/Screens/home_screen.dart';
 import 'package:chat_app/Screens/log_in.dart';
-import 'package:chat_app/Screens/sign_up.dart';
-import 'package:chat_app/Screens/homepage.dart';
+
 import 'package:chat_app/api/apis.dart';
 import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/helper/dialogs.dart';
 import 'package:chat_app/main.dart';
-import 'package:chat_app/models2/chat_user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +42,7 @@ class _profile_screenState extends State<profile_screen> {
           leading: IconButton(
               onPressed: () {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => const SecondHome()));
+                    MaterialPageRoute(builder: (_) => const HomeScreen()));
               },
               icon: const Icon(Icons.arrow_back_ios)),
           title: const Text("Profile Settings"),
