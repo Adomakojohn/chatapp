@@ -1,10 +1,10 @@
-// ignore_for_file: unused_import, avoid_print
+// ignore_for_file: unused_import
 
 import 'package:animated_switch/animated_switch.dart';
-import 'package:chat_app/Screens/homepage.dart';
+import 'package:chat_app/Screens/home_screen.dart';
 import 'package:chat_app/Screens/log_in.dart';
+import 'package:chat_app/api/apis.dart';
 import 'package:chat_app/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -25,15 +25,16 @@ class Splash extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       //exit fullScreen
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-      SystemChrome.setSystemUIOverlayStyle(
-          const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.white,
+          statusBarColor: Colors.white));
 
-      if (FirebaseAuth.instance.currentUser != null) {
-        print('\nUser: ${FirebaseAuth.instance.currentUser}');
+      if (APIs.auth.currentUser != null) {
+        // ignore: avoid_print
+        print('\nUser: ${APIs.auth.currentUser}');
 
-        print('\nUser: ${FirebaseAuth.instance.currentUser}');
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const HomePage()));
+            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
       } else {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => const LogInScreen()));
