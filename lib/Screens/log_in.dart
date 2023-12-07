@@ -1,5 +1,18 @@
+// ignore: unused_import
+// ignore_for_file: avoid_print, duplicate_import
+
+import 'dart:developer';
+import 'dart:io';
+// ignore: unused_import
 import 'package:animated_switch/animated_switch.dart';
+import 'package:chat_app/Screens/home_screen.dart';
+import 'package:chat_app/Screens/home_screen.dart';
+import 'package:chat_app/api/apis.dart';
+import 'package:chat_app/helper/dialogs.dart';
+import 'package:chat_app/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 //stateful class for the login screen
 class LogInScreen extends StatefulWidget {
@@ -10,193 +23,109 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  bool _isAnimate = false;
+// handles google login button click
+  _handleGoogleBtnClick() {
+    // for showing progress bar
+    Dialogs.showProgressBar(context);
+    _signInWithGoogle().then((user) async {
+      Navigator.pop(context);
+      if (user != null) {
+        log('\nUser: ${user.user}');
+
+        log('\nUser: ${user.additionalUserInfo}');
+        if ((await APIs.userExists())) {
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+        } else {
+          await APIs.createUser().then((value) {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+          });
+        }
+      }
+    });
+  }
+
+  Future<UserCredential?> _signInWithGoogle() async {
+    try {
+      await InternetAddress.lookup('google.com');
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      return await APIs.auth.signInWithCredential(credential);
+      // ignore: empty_catches
+    } catch (e) {
+      log('\n_signInWithGoogle:  $e');
+      // ignore: use_build_context_synchronously
+      Dialogs.showSnackbar(context,
+          'Oops! Something Went Wrong,Please Check Your Internet Connection And Try Again.');
+      return null;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
+        _isAnimate = true;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    mq = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text("Welcome to Chat Wave"),
+      ),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              Colors.indigo,
-              Colors.indigo.withOpacity(0.5),
-            ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Login',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 30),
+          AnimatedPositioned(
+              top: mq.height * .15,
+              right: _isAnimate ? mq.width * .15 : -mq.width * .5,
+              width: mq.width * .80,
+              duration: const Duration(seconds: 1),
+              child: Image.asset(
+                'Assets/Icons/ChatIcon.png',
+                height: 300,
+              )),
+          Positioned(
+              height: mq.height * .070,
+              top: mq.height * .70,
+              width: mq.width * .78,
+              left: mq.width * .11,
+              child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 223, 255, 187),
+                      elevation: 1),
+                  onPressed: () {
+                    _handleGoogleBtnClick();
+                  },
+                  icon: Image.asset(
+                    'Assets/images/googleLogo.png',
+                    height: mq.height * .03,
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextFormField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        hintText: "Email Address",
-                        label: Text("Email Address"),
-                        fillColor: Color(0xffD8D8DD),
-                        filled: true,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          hintText: "Password",
-                          label: const Text("Password"),
-                          fillColor: const Color(0xffD8D8DD),
-                          filled: true,
-                          suffixIcon: InkWell(
-                              onTap: () {},
-                              child: const Icon(Icons.visibility_off))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 8, right: 20),
-                    child: Row(
-                      children: [
-                        const AnimatedSwitch(
-                          colorOff: Color(0xffA09F99),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        const Text(
-                          'Remember me',
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ),
-                        const Spacer(),
-                        InkWell(
-                          onTap: () {},
-                          child: const Text(
-                            "Forgot Password?",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Container(
-                        height: 60,
-                        width: 375,
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 239, 216, 12),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "Log In",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          "----------------------------------",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Text(
-                          'or',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Text(
-                          "----------------------------------",
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Container(
-                        height: 60,
-                        width: 375,
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 183, 183, 188),
-                        ),
-                        child: const Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Image(
-                                  image: AssetImage(
-                                      'assets/images/googleLogo.png')),
-                            ),
-                            SizedBox(
-                              width: 50,
-                            ),
-                            Text(' Log In with Google',
-                                style: TextStyle(color: Colors.black))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Row(
-                      children: [
-                        const Text(
-                          "Don't have an account?",
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: const Text(
-                            "   Sign Up",
-                            style:
-                                TextStyle(color: Colors.yellow, fontSize: 15),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
+                  label: const Text(
+                    "Sign In With Google",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ))),
         ],
       ),
     );
