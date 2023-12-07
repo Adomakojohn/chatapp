@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     mq = MediaQuery.of(context).size;
     return MaterialApp(
+      debugShowMaterialGrid: false,
       theme: ThemeData(
           appBarTheme: const AppBarTheme(
         backgroundColor: Colors.white,

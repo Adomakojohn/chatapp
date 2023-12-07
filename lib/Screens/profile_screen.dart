@@ -1,12 +1,13 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, unnecessary_import
 
 import 'dart:developer';
-
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/Screens/Second_Home.dart';
 import 'package:chat_app/Screens/log_in.dart';
 import 'package:chat_app/Screens/sign_up.dart';
-
 import 'package:chat_app/Screens/homepage.dart';
 import 'package:chat_app/api/apis.dart';
 import 'package:chat_app/firebase_options.dart';
@@ -30,6 +31,7 @@ class profile_screen extends StatefulWidget {
 // ignore: camel_case_types
 class _profile_screenState extends State<profile_screen> {
   final _formKey = GlobalKey<FormState>();
+  String? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -89,21 +91,40 @@ class _profile_screenState extends State<profile_screen> {
 
                   Stack(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(mq.height * .1),
-                        child: CachedNetworkImage(
-                          width: mq.height * .2,
-                          height: mq.height * .2,
-                          fit: BoxFit.fill,
-                          imageUrl: widget.user.image,
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              const CircleAvatar(
-                            child: Icon(CupertinoIcons.person),
-                          ),
-                        ),
-                      ),
+                      // profile picture
+                      _image != null
+                          ?
+
+                          //local image...
+                          ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(mq.height * .1),
+                              child: Image.file(
+                                File(_image!),
+                                width: mq.height * .2,
+                                height: mq.height * .2,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          :
+
+                          // image from server
+                          ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(mq.height * .1),
+                              child: CachedNetworkImage(
+                                width: mq.height * .2,
+                                height: mq.height * .2,
+                                fit: BoxFit.cover,
+                                imageUrl: widget.user.image,
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const CircleAvatar(
+                                  child: Icon(CupertinoIcons.person),
+                                ),
+                              ),
+                            ),
                       Positioned(
                         bottom: 0,
                         right: 0,
@@ -230,6 +251,7 @@ class _profile_screenState extends State<profile_screen> {
               SizedBox(
                 height: mq.height * .03,
               ),
+              //buttons?
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -239,7 +261,22 @@ class _profile_screenState extends State<profile_screen> {
                           backgroundColor: Colors.white,
                           shape: const CircleBorder(),
                           fixedSize: Size(mq.width * 000.5, mq.height * .1)),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+                        // Pick an image.
+                        final XFile? image = await picker.pickImage(
+                            source: ImageSource.gallery, imageQuality: 80);
+                        if (image != null) {
+                          log('image Path:${image.path} -- MimeType:${image.mimeType}');
+                          setState(() {
+                            _image = image.path;
+                          });
+                          APIs.updateProfilePicture(File(_image!));
+                          // for hiding buttom sheet
+                          // ignore: use_build_context_synchronously
+                          Navigator.pop(context);
+                        }
+                      },
                       child: Image.asset(
                         'Assets/images/add_image.png',
                       )),
@@ -249,7 +286,23 @@ class _profile_screenState extends State<profile_screen> {
                           backgroundColor: Colors.white,
                           shape: const CircleBorder(),
                           fixedSize: Size(mq.width * 000.5, mq.height * .1)),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+                        // Pick an image.
+                        final XFile? image = await picker.pickImage(
+                            source: ImageSource.camera, imageQuality: 80);
+                        if (image != null) {
+                          log('image Path:${image.path}');
+                          setState(() {
+                            _image = image.path;
+                          });
+
+                          APIs.updateProfilePicture(File(_image!));
+                          // for hiding buttom sheet
+                          // ignore: use_build_context_synchronously
+                          Navigator.pop(context);
+                        }
+                      },
                       child: Image.asset(
                         'Assets/images/camera.png',
                       )),

@@ -46,11 +46,20 @@ dependencies:
   google_sign_in: ^6.1.6
   cloud_firestore: ^4.13.3
   cached_network_image: ^3.3.0
+  image_picker_platform_interface: ^2.9.1
+  image_picker: ^1.0.4
+  firebase_storage: ^11.5.3
 
 # For accessing cloud Firestore database
 cloud_firestore: ^4.13.3
 #For showing nentwork images
 cached_network_image: ^3.3.0
+
+# for picking images
+image_picker: ^1.0.4
+# for accessing firebase storage(for uploading files)
+firebase_storage: ^11.5.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
